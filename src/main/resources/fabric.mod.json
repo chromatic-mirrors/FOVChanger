@@ -1,0 +1,39 @@
+{
+    "schemaVersion": 1,
+    "id": "${id}",
+    "version": "${version}",
+    "name": "${name}",
+    "description": "Further customization for your FOV.",
+    "authors": [
+        "chromatic"
+    ],
+    "contact": {
+        "homepage": "https://modrinth.com/mod/fovchanger",
+        "sources": "https://codeberg.org/chromatic/FOVChanger"
+    },
+    "contributors": [
+        "awruff",
+        "Tellinq",
+        "zircta"
+    ],
+    "license": "LGPL-3.0",
+    "icon": "assets/fovchanger/logo.png",
+    "environment": "client",
+    "entrypoints": {
+        "client": [
+            "org.codeberg.chromatic.fovchanger.FOVChanger"
+        ]
+    },
+    "mixins": [
+        "fovchanger.mixins.json"
+    ],
+    "depends": {
+        "minecraft": "${minecraft}",
+        "fabricloader": ">=0.17",
+        "oneconfigv1": ">=1.0.0-beta.1"
+    },
+    "conflicts": {
+        "ichor": "*",
+        "feather": "*"
+    }
+}
