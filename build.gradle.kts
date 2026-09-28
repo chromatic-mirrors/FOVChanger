@@ -45,6 +45,9 @@ repositories {
         content { includeGroup("net.azureaaron") }
     }
     maven("https://redirector.kotlinlang.org/maven/compose-dev")
+    maven("https://api.modrinth.com/maven") {
+        content { includeGroup("maven.modrinth") }
+    }
 }
 
 dependencies {
