@@ -140,7 +140,7 @@ publishMods {
 
     modrinth {
         projectId = property("publish.modrinth").toString()
-        accessToken = property("modrinth.token").toString()
+        accessToken = property("publish.modrinth.token").toString()
 
         minecraftVersions.addAll(compatibleVersions)
 
