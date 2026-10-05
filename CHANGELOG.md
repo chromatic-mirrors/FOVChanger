@@ -1,2 +1,2 @@
-## 1.0.1
-- Added 1.8.9 support
+## 1.0.2
+- Removed useless freezing option from 1.8.9
