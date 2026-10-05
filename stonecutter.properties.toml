@@ -1,7 +1,7 @@
 mod.id = "fovchanger"
 mod.name = "FOVChanger"
 mod.group = "org.codeberg.chromatic"
-mod.version = "1.0.0"
+mod.version = "1.0.1"
 
 publish.modrinth = "JyeqOA7R"
 
