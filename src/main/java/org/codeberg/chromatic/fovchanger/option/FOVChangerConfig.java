@@ -69,5 +69,8 @@ public class FOVChangerConfig extends Config {
 
     private FOVChangerConfig() {
         super("fovchanger.json", "FOVChanger", Category.QOL);
+
+        //? if =1.8.9
+        // hideIf("freezing", () -> true);
     }
 }
