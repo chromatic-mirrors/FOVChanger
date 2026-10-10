@@ -2,10 +2,14 @@ package org.codeberg.chromatic.fovchanger.option;
 
 import org.polyfrost.oneconfig.api.config.v1.Config;
 import org.polyfrost.oneconfig.api.config.v1.annotations.Slider;
+import org.polyfrost.oneconfig.api.config.v1.annotations.Switch;
 
 public class FOVChangerConfig extends Config {
 
     public static final FOVChangerConfig INSTANCE = new FOVChangerConfig();
+
+    @Switch(title = "Enabled")
+    public static boolean enabled = true;
 
     @Slider(
             title = "Speed FOV Effects",

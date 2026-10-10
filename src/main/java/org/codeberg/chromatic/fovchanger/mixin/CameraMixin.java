@@ -36,14 +36,17 @@ public class CameraMixin {
     )
     //? if >=1.21.4 {
     private float fovChanger$scaleSubmergedFov(float vanilla) {
+        if (!FOVChangerConfig.enabled) return vanilla;
         return 1.0F - (1.0F - vanilla) * FOVChangerConfig.getSubmerged();
     }
     //?} elif >1.8.9 {
     //private double fovChanger$scaleSubmergedFov(double vanilla) {
+    //    if (!FOVChangerConfig.enabled) return vanilla;
     //    return 1.0 - (1.0 - vanilla) * FOVChangerConfig.getSubmerged();
     //}
     //?} else {
     //private float fovChanger$scaleSubmergedFov(float vanilla) {
+    //    if (!FOVChangerConfig.enabled) return vanilla;
     //    return 70.0F - (70.0F - vanilla) * FOVChangerConfig.getSubmerged();
     //}
     //?}

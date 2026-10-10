@@ -1,2 +1,2 @@
-## 1.0.2
-- Removed useless freezing option from 1.8.9
+## 1.0.3
+- Added a toggle

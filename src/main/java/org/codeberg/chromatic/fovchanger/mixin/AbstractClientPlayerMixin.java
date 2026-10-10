@@ -36,7 +36,7 @@ public class AbstractClientPlayerMixin {
         Minecraft minecraft = Minecraft.getInstance();
         Player player = minecraft.player;
 
-        if (player == null) return baseFov;
+        if (player == null || !FOVChangerConfig.enabled) return baseFov;
 
         float modifier = 1.0F;
 
@@ -99,6 +99,8 @@ public class AbstractClientPlayerMixin {
 
     @ModifyReturnValue(method = "getFovModifier", at = @At("RETURN"))
     private float fovChanger$applyCustomFovModifier(float vanilla) {
+        if (!FOVChangerConfig.enabled) return vanilla;
+
         ClientPlayerEntity player = (ClientPlayerEntity) (Object) this;
 
         float modifier = 1.0F;
