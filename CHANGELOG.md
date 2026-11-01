@@ -1,2 +1,2 @@
-## 1.0.3
-- Added a toggle
+## Unreleased
+- Added an absolute FOV mode

@@ -39,13 +39,21 @@ public class AbstractClientPlayerMixin {
         if (player == null || !FOVChangerConfig.enabled) return baseFov;
 
         float modifier = 1.0F;
+        AttributeInstance movementAttr = player.getAttribute(Attributes.MOVEMENT_SPEED);
 
-        if (player.getAbilities().flying) {
+        if (FOVChangerConfig.absolute) {
+            boolean speedChanged = false;
+            if (movementAttr != null) {
+                float currentSpeed = (float) movementAttr.getValue();
+                if (player.isSprinting()) currentSpeed /= 1 + DEFAULT_SPEED;
+                speedChanged = Math.abs(currentSpeed - player.getAbilities().getWalkingSpeed()) > 1.0E-4F;
+            }
+            modifier = FOVChangerConfig.getAbsoluteModifier(speedChanged, player.getTicksFrozen() > 0, player.isSprinting(), player.getAbilities().flying);
+        } else if (player.getAbilities().flying) {
             modifier *= 1.0F + 0.1F * FOVChangerConfig.getFlying();
         }
 
-        AttributeInstance movementAttr = player.getAttribute(Attributes.MOVEMENT_SPEED);
-        if (movementAttr != null) {
+        if (!FOVChangerConfig.absolute && movementAttr != null) {
             float currentSpeed = (float) movementAttr.getValue();
             float walkingSpeed = player.getAbilities().getWalkingSpeed();
 
@@ -81,7 +89,9 @@ public class AbstractClientPlayerMixin {
                 int ticks = player.getTicksUsingItem();
                 float drawProgress = Math.min((float) ticks / 20.0F, 1.0F);
                 drawProgress *= drawProgress;
-                modifier *= 1.0F - (drawProgress * 0.15F) * FOVChangerConfig.getAiming();
+                modifier = FOVChangerConfig.absolute
+                        ? modifier + (FOVChangerConfig.toModifier(FOVChangerConfig.aimingFov) - modifier) * drawProgress
+                        : modifier * (1.0F - (drawProgress * 0.15F) * FOVChangerConfig.getAiming());
             } else if (minecraft.options.getCameraType().isFirstPerson() &&
                     player.isScoping()) {
                 modifier *= 0.1F;
@@ -105,14 +115,17 @@ public class AbstractClientPlayerMixin {
 
         float modifier = 1.0F;
 
-        if (player.abilities.flying) {
-            modifier *= 1.0F + 0.1F * FOVChangerConfig.getFlying();
-        }
-
         float currentSpeed = (float) player.getAttribute(EntityAttributes.MOVEMENT_SPEED).get();
         float walkingSpeed = player.abilities.getWalkSpeed();
 
-        if (currentSpeed != walkingSpeed) {
+        if (FOVChangerConfig.absolute) {
+            float baseSpeed = player.isSprinting() ? currentSpeed / (1 + DEFAULT_SPEED) : currentSpeed;
+            modifier = FOVChangerConfig.getAbsoluteModifier(Math.abs(baseSpeed - walkingSpeed) > 1.0E-4F, false, player.isSprinting(), player.abilities.flying);
+        } else if (player.abilities.flying) {
+            modifier *= 1.0F + 0.1F * FOVChangerConfig.getFlying();
+        }
+
+        if (!FOVChangerConfig.absolute && currentSpeed != walkingSpeed) {
             float speedConfig = FOVChangerConfig.getSpeed();
 
             if (player.isSprinting()) {
@@ -139,7 +152,9 @@ public class AbstractClientPlayerMixin {
             int ticks = player.getRemainingItemUseDuration();
             float drawProgress = Math.min((float) ticks / 20.0F, 1.0F);
             drawProgress *= drawProgress;
-            modifier *= 1.0F - (drawProgress * 0.15F) * FOVChangerConfig.getAiming();
+            modifier = FOVChangerConfig.absolute
+                    ? modifier + (FOVChangerConfig.toModifier(FOVChangerConfig.aimingFov) - modifier) * drawProgress
+                    : modifier * (1.0F - (drawProgress * 0.15F) * FOVChangerConfig.getAiming());
         }
 
         return modifier;

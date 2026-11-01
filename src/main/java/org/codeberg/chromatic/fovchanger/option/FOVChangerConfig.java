@@ -1,15 +1,17 @@
 package org.codeberg.chromatic.fovchanger.option;
 
+import net.minecraft.client.Minecraft;
 import org.polyfrost.oneconfig.api.config.v1.Config;
 import org.polyfrost.oneconfig.api.config.v1.annotations.Slider;
 import org.polyfrost.oneconfig.api.config.v1.annotations.Switch;
 
 public class FOVChangerConfig extends Config {
 
-    public static final FOVChangerConfig INSTANCE = new FOVChangerConfig();
-
     @Switch(title = "Enabled")
     public static boolean enabled = true;
+
+    @Switch(title = "Absolute FOV")
+    public static boolean absolute = false;
 
     @Slider(
             title = "Speed FOV Effects",
@@ -71,10 +73,52 @@ public class FOVChangerConfig extends Config {
         return submerged / 100;
     }
 
+    @Slider(title = "Speed FOV", min = 30.0F, max = 110.0F)
+    public static float speedFov = 85.0F;
+
+    @Slider(title = "Freezing FOV", min = 30.0F, max = 110.0F)
+    public static float freezingFov = 60.0F;
+
+    @Slider(title = "Sprint FOV", min = 30.0F, max = 110.0F)
+    public static float sprintFov = 80.0F;
+
+    @Slider(title = "Aiming FOV", min = 30.0F, max = 110.0F)
+    public static float aimingFov = 60.0F;
+
+    @Slider(title = "Flying FOV", min = 30.0F, max = 110.0F)
+    public static float flyingFov = 77.0F;
+
+    @Slider(title = "Submerged FOV", min = 30.0F, max = 110.0F)
+    public static float submergedFov = 60.0F;
+
+    public static float toModifier(float fov) {
+        //? if >1.8.9 {
+        return fov / Minecraft.getInstance().options.fov().get();
+        //?} else {
+        /*return fov / Minecraft.getInstance().options.fov;
+        *///?}
+    }
+
+    public static float getAbsoluteModifier(boolean speedChanged, boolean freezing, boolean sprinting, boolean flying) {
+        if (speedChanged) return toModifier(freezing ? freezingFov : speedFov);
+        if (sprinting) return toModifier(sprintFov);
+        if (flying) return toModifier(flyingFov);
+        return 1.0F;
+    }
+
+    public static final FOVChangerConfig INSTANCE = new FOVChangerConfig();
+
     private FOVChangerConfig() {
         super("fovchanger.json", "FOVChanger", Category.QOL);
 
-        //? if =1.8.9
-        // hideIf("freezing", () -> true);
+        for (String option : new String[]{"speed", "freezing", "sprint", "aiming", "flying", "submerged"}) {
+            hideIf(option, () -> absolute);
+            hideIf(option + "Fov", "absolute");
+        }
+
+        //? if =1.8.9 {
+        /*hideIf("freezing", () -> true);
+        hideIf("freezingFov", () -> true);
+        *///?}
     }
 }
