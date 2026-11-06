@@ -1,2 +1,2 @@
-## 1.0.4
-- Added an absolute FOV mode
+## 1.0.5
+- Retitle mod from "FOVChanger" to "FOV Changer"
