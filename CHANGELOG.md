@@ -1,2 +1,2 @@
-## 1.0.5
-- Retitle mod from "FOVChanger" to "FOV Changer"
+## 1.0.6
+- Fixed "Absolute FOV" options not properly toggling on/off
