@@ -2,12 +2,13 @@ package org.codeberg.chromatic.fovchanger.option;
 
 import net.minecraft.client.Minecraft;
 import org.polyfrost.oneconfig.api.config.v1.Config;
+import org.polyfrost.oneconfig.api.config.v1.annotations.MasterToggle;
 import org.polyfrost.oneconfig.api.config.v1.annotations.Slider;
 import org.polyfrost.oneconfig.api.config.v1.annotations.Switch;
 
 public class FOVChangerConfig extends Config {
 
-    @Switch(title = "Enabled")
+    @MasterToggle
     public static boolean enabled = true;
 
     @Switch(title = "Absolute FOV")
@@ -111,9 +112,12 @@ public class FOVChangerConfig extends Config {
     private FOVChangerConfig() {
         super("fovchanger.json", "FOVChanger", Category.QOL);
 
+        addDependency("absolute", "enabled");
         for (String option : new String[]{"speed", "freezing", "sprint", "aiming", "flying", "submerged"}) {
             hideIf(option, () -> absolute);
             hideIf(option + "Fov", "absolute");
+            addDependency(option, "enabled");
+            addDependency(option + "Fov", "enabled");
         }
 
         //? if =1.8.9 {
